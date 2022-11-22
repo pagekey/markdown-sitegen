@@ -36,7 +36,7 @@ function main() {
 
     let web_dir = path.join(__dirname, 'web');
     let index_content_raw = fs.readFileSync(path.join(web_dir, 'index.ejs')).toString();
-    let index_content = ejs.render(index_content_raw, {exampleVar: 'world'});
+    let index_content = ejs.render(index_content_raw, {...config});
     fs.writeFileSync(path.join(build_dir, 'index.html'), index_content);
 
     return 0;
