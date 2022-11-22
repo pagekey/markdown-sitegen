@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const fs = require('fs');
 const path = require('path');
 
 function print_usage() {
@@ -12,10 +13,32 @@ function main() {
     
     if (args.length != 1) {
         print_usage();
-        return;
+        return 1;
     }
 
     let content_dir = path.resolve(args[0]);
-    console.log(content_dir);
+    let config_path = path.join(content_dir, 'sitegen.json');
+    if (!fs.existsSync(config_path)) {
+        console.error('Config file not found: ' + config_path);
+        return 1;
+    }
+    let config_str = fs.readFileSync(config_path);
+    let config = JSON.parse(config_str);
+    console.log(config);
+
+    // Remove build dir
+    let build_dir = './build';
+    if (fs.existsSync(build_dir)) {
+        fs.rmdirSync(build_dir, { recursive: true });
+    }
+    fs.mkdirSync(build_dir);
+
+    let web_dir = path.join(__filename, '..', 'web');
+    fs.copyFileSync(
+        path.join(web_dir, 'index.html'),
+        path.join(build_dir, 'index.html'),
+    );
+
+    return 0;
 }
-main();
+process.exit(main());
