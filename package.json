@@ -1,0 +1,22 @@
+{
+  "name": "sitegen",
+  "version": "1.0.0",
+  "description": "PageKey Tech sitegen tool",
+  "main": "app/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/pagekey/sitegen.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/pagekey/sitegen/issues"
+  },
+  "homepage": "https://gitlab.com/pagekey/sitegen#readme",
+  "bin": {
+    "sitegen": "./app/index.js"
+  }
+}
