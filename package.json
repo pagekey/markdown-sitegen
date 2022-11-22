@@ -18,5 +18,8 @@
   "homepage": "https://gitlab.com/pagekey/sitegen#readme",
   "bin": {
     "sitegen": "./app/index.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.8"
   }
 }

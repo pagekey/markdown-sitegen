@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
 
@@ -33,11 +34,10 @@ function main() {
     }
     fs.mkdirSync(build_dir);
 
-    let web_dir = path.join(__filename, '..', 'web');
-    fs.copyFileSync(
-        path.join(web_dir, 'index.html'),
-        path.join(build_dir, 'index.html'),
-    );
+    let web_dir = path.join(__dirname, 'web');
+    let index_content_raw = fs.readFileSync(path.join(web_dir, 'index.ejs')).toString();
+    let index_content = ejs.render(index_content_raw, {exampleVar: 'world'});
+    fs.writeFileSync(path.join(build_dir, 'index.html'), index_content);
 
     return 0;
 }

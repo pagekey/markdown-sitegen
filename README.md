@@ -11,3 +11,11 @@ It keeps presentation of content separate from the content itself, and tries to 
 2. `npm link`
 
 3. `sitegen ./path/to/content`
+
+## Debugging
+
+1. Insert `debugger;` in code
+
+2. Run `node inspect app/index.js ./path/to/content`
+
+3. CTRL-C twice when done.
