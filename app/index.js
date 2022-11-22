@@ -32,7 +32,6 @@ function main() {
     }
     let config_str = fs.readFileSync(config_path);
     let config = JSON.parse(config_str);
-    console.log(config);
 
     // Remove build dir
     let build_dir = './build';
@@ -41,11 +40,8 @@ function main() {
     }
     fs.mkdirSync(build_dir);
 
-    let web_dir = path.join(__dirname, 'web');
-    let index_content_raw = fs.readFileSync(path.join(web_dir, 'index.ejs')).toString();
-    // let index_content = ejs.render(index_content_raw, {...config});
     let index_content = ReactDomServer.renderToString(
-        React.createElement(Home)
+        React.createElement(Home, config)
     );
     fs.writeFileSync(path.join(build_dir, 'index.html'), index_content);
 

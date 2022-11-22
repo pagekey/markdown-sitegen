@@ -16,6 +16,6 @@ It keeps presentation of content separate from the content itself, and tries to 
 
 1. Insert `debugger;` in code
 
-2. Run `node inspect app/index.js ./path/to/content`
+2. Run `node inspect app/index.js ./test/sample/sitegen.json`
 
 3. CTRL-C twice when done.
