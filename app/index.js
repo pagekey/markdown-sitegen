@@ -3,6 +3,9 @@
 const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
+const React = require('react');
+const ReactDomServer = require('react-dom/server');
+const Home = require('./web/Home');
 
 function print_usage() {
     console.error('Usage: sitegen <content_dir>');
@@ -36,7 +39,10 @@ function main() {
 
     let web_dir = path.join(__dirname, 'web');
     let index_content_raw = fs.readFileSync(path.join(web_dir, 'index.ejs')).toString();
-    let index_content = ejs.render(index_content_raw, {...config});
+    // let index_content = ejs.render(index_content_raw, {...config});
+    let index_content = ReactDomServer.renderToString(
+        React.createElement(Home)
+    );
     fs.writeFileSync(path.join(build_dir, 'index.html'), index_content);
 
     return 0;
