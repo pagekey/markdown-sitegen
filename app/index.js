@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+require('babel-register')({
+    presets: ['react'],
+});
+
 const ejs = require('ejs');
 const fs = require('fs');
 const path = require('path');
