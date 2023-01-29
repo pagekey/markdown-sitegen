@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
-require('babel-register')({
-    presets: ['react'],
-});
+import * as ReactDOMServer from 'react-dom/server';
+import * as fs from 'fs';
+import * as path from 'path';
+import {evaluateSync} from '@mdx-js/mdx';
+import * as runtime from 'react/jsx-runtime'
 
-const fs = require('fs');
-const path = require('path');
-const React = require('react');
-const ReactDomServer = require('react-dom/server');
-const Home = require('./web/Home');
+// import * as Home from './web/Home';
+
+// const React = require('react');
+// const mdx = require('@mdx-js/mdx');
 
 function print_usage() {
     console.error('Usage: sitegen <content_dir>');
@@ -29,24 +30,39 @@ function main() {
         return 1;
     }
 
+    // Get .sitegenignore path
+    let sitegenignore = [];
+    const sitegenignore_path = path.join(content_dir, '.sitegenignore');
+    if (fs.existsSync(sitegenignore_path)) {
+        sitegenignore = fs.readFileSync(sitegenignore_path, 'utf-8').split('\n');
+    }
+
     // Gather all markdown file paths
     let markdown_files = [];
     const handleDir = (directory, fileList) => {
         fs.readdirSync(directory).forEach((filename) => {
-            full_filename = path.join(directory, filename);
+            if (sitegenignore.includes(filename)) {
+                return; // skip
+            }
+            let full_filename = path.join(directory, filename);
             if (fs.lstatSync(full_filename).isDirectory()) {
-                console.log('whoa');
+                handleDir(full_filename, fileList);
             } else {
                 if (full_filename.endsWith('.md')) {
-                    console.log('ha! found one')
                     fileList.push(full_filename);
                 }
             }
         });
-        return fileList;
     }
     handleDir(content_dir, markdown_files);
-    console.log(markdown_files);
+    markdown_files.forEach((filename) => {
+        console.log(filename);
+        const body = fs.readFileSync(filename);
+        const out = evaluateSync(body, {
+            ...runtime,
+        }).default;
+        console.log(out);
+    });
 
     // Remove build dir
     let build_dir = './build';
@@ -55,10 +71,10 @@ function main() {
     }
     fs.mkdirSync(build_dir);
 
-    let index_content = ReactDomServer.renderToString(
-        React.createElement(Home, {})
-    );
-    fs.writeFileSync(path.join(build_dir, 'index.html'), index_content);
+    // let index_content = ReactDOMServer.renderToString(
+    //     React.createElement(Home, {})
+    // );
+    // fs.writeFileSync(path.join(build_dir, 'index.html'), index_content);
 
     return 0;
 }
