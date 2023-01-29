@@ -24,13 +24,29 @@ function main() {
     }
 
     let content_dir = path.resolve(args[0]);
-    let config_path = path.join(content_dir, 'sitegen.json');
-    if (!fs.existsSync(config_path)) {
-        console.error('Config file not found: ' + config_path);
+    if (!fs.lstatSync(content_dir).isDirectory()) {
+        console.error('Error: not a directory - ' + content_dir);
         return 1;
     }
-    let config_str = fs.readFileSync(config_path);
-    let config = JSON.parse(config_str);
+
+    // Gather all markdown file paths
+    let markdown_files = [];
+    const handleDir = (directory, fileList) => {
+        fs.readdirSync(directory).forEach((filename) => {
+            full_filename = path.join(directory, filename);
+            if (fs.lstatSync(full_filename).isDirectory()) {
+                console.log('whoa');
+            } else {
+                if (full_filename.endsWith('.md')) {
+                    console.log('ha! found one')
+                    fileList.push(full_filename);
+                }
+            }
+        });
+        return fileList;
+    }
+    handleDir(content_dir, markdown_files);
+    console.log(markdown_files);
 
     // Remove build dir
     let build_dir = './build';
@@ -40,7 +56,7 @@ function main() {
     fs.mkdirSync(build_dir);
 
     let index_content = ReactDomServer.renderToString(
-        React.createElement(Home, config)
+        React.createElement(Home, {})
     );
     fs.writeFileSync(path.join(build_dir, 'index.html'), index_content);
 
