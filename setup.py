@@ -12,8 +12,7 @@ setup(
         'console_scripts': ['markdown-sitegen=markdown_sitegen.cli:cli_entry_point'],
     },
     install_requires=[
-        'numpy',
-        'pyyaml',
-        'PyQt5'
+        'python-frontmatter',
+        'markdown',
     ],
 )

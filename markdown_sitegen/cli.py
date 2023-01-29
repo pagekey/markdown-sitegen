@@ -2,6 +2,9 @@ import glob
 import os
 import sys
 
+import frontmatter
+import markdown
+
 
 def print_usage():
     print("Usage:")
@@ -22,8 +25,16 @@ def cli_entry_point():
                     continue
                 for filename in files:
                     if filename.lower().endswith('.md'):
-                        files_to_render.append(filename)
-            print(files_to_render, len(files_to_render))
+                        files_to_render.append(os.path.join(root, filename))
+            # Render markdown to html
+            for filename in files_to_render:
+                with open(filename) as f:
+                    post = frontmatter.load(f)
+                    html = markdown.markdown(post.content)
+                    out_filename = os.path.join('build', filename.replace(gen_dir, '').replace('.md', '.html'))
+                    os.makedirs(os.path.dirname(out_filename), exist_ok=True)
+                    with open(out_filename, 'w') as f:
+                        f.write(html)
         else:
             print("Error: not a directory - %s" % gen_dir)
     else:
