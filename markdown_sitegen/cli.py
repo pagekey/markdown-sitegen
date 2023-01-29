@@ -13,7 +13,13 @@ def cli_entry_point():
         gen_dir = sys.argv[1]
         if os.path.exists(gen_dir) and os.path.isdir(gen_dir):
             files_to_render = []
+            sitegenignore = []
+            if os.path.exists(os.path.join(gen_dir, '.sitegenignore')):
+                with open(os.path.join(gen_dir, '.sitegenignore')) as f:
+                    sitegenignore = f.read().split('\n')
             for root, dirs, files in os.walk(gen_dir):
+                if os.path.basename(root) in sitegenignore:
+                    continue
                 for filename in files:
                     if filename.lower().endswith('.md'):
                         files_to_render.append(filename)
