@@ -39,7 +39,7 @@ def cli_entry_point():
                     relpath = filename.replace(gen_dir, '').replace('.md', '.html')
                     if relpath.startswith('/'):
                         relpath = relpath[1:]
-                    out_filename = os.path.join('build', relpath)
+                    out_filename = os.path.join(BUILD_DIR, relpath)
                     os.makedirs(os.path.dirname(out_filename), exist_ok=True)
                     # Render template
                     content = post_template.render(body=html)
@@ -48,7 +48,7 @@ def cli_entry_point():
             # Render other pages like home, etc.
             index_template = env.get_template('index.html')
             content = index_template.render(test='hello world')
-            with open(os.path.join('build', 'index.html'), 'w') as f:
+            with open(os.path.join(BUILD_DIR, 'index.html'), 'w') as f:
                 f.write(content)
         else:
             print("Error: not a directory - %s" % gen_dir)
