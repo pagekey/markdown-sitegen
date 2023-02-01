@@ -36,7 +36,10 @@ def cli_entry_point():
                 with open(filename) as f:
                     post = frontmatter.load(f)
                     html = markdown.markdown(post.content)
-                    out_filename = os.path.join('build', filename.replace(gen_dir, '').replace('.md', '.html'))
+                    relpath = filename.replace(gen_dir, '').replace('.md', '.html')
+                    if relpath.startswith('/'):
+                        relpath = relpath[1:]
+                    out_filename = os.path.join('build', relpath)
                     os.makedirs(os.path.dirname(out_filename), exist_ok=True)
                     # Render template
                     content = post_template.render(body=html)
