@@ -12,6 +12,7 @@ setup(
         'console_scripts': ['markdown-sitegen=markdown_sitegen.cli:cli_entry_point'],
     },
     install_requires=[
+        'jinja2',
         'python-frontmatter',
         'markdown',
     ],

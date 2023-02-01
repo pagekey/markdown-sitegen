@@ -1,10 +1,13 @@
-import glob
 import os
 import sys
 
 import frontmatter
+import jinja2
 import markdown
 
+
+BUILD_DIR = 'build'
+TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'web')
 
 def print_usage():
     print("Usage:")
@@ -27,14 +30,23 @@ def cli_entry_point():
                     if filename.lower().endswith('.md'):
                         files_to_render.append(os.path.join(root, filename))
             # Render markdown to html
+            env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
+            post_template = env.get_template('post.html')
             for filename in files_to_render:
                 with open(filename) as f:
                     post = frontmatter.load(f)
                     html = markdown.markdown(post.content)
                     out_filename = os.path.join('build', filename.replace(gen_dir, '').replace('.md', '.html'))
                     os.makedirs(os.path.dirname(out_filename), exist_ok=True)
+                    # Render template
+                    content = post_template.render(body=html)
                     with open(out_filename, 'w') as f:
-                        f.write(html)
+                        f.write(content)
+            # Render other pages like home, etc.
+            index_template = env.get_template('index.html')
+            content = index_template.render(test='hello world')
+            with open(os.path.join('build', 'index.html'), 'w') as f:
+                f.write(content)
         else:
             print("Error: not a directory - %s" % gen_dir)
     else:
