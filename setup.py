@@ -1,9 +1,10 @@
+import setuptools
 from distutils.core import setup
 
 
 setup(
     name='markdown-sitegen',
-    version='1.0.0',
+    version='0.0.0',
     description='Markdown site generator',
     author='Steve G',
     author_email='steve@pagekeytech.com',
@@ -16,4 +17,5 @@ setup(
         'python-frontmatter',
         'markdown',
     ],
+    package_data={'markdown_sitegen': ['web/*']}
 )
