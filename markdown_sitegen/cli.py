@@ -35,16 +35,18 @@ def cli_entry_point():
             for filename in files_to_render:
                 with open(filename) as f:
                     post = frontmatter.load(f)
-                    html = markdown.markdown(post.content)
-                    relpath = filename.replace(gen_dir, '').replace('.md', '.html')
-                    if relpath.startswith('/'):
-                        relpath = relpath[1:]
-                    out_filename = os.path.join(BUILD_DIR, relpath)
-                    os.makedirs(os.path.dirname(out_filename), exist_ok=True)
-                    # Render template
-                    content = post_template.render(body=html)
-                    with open(out_filename, 'w') as f:
-                        f.write(content)
+                    if 'path' in post:
+                        # Only publish the post if path specified
+                        html = markdown.markdown(post.content)
+                        relpath = filename.replace(gen_dir, '').replace('.md', '.html')
+                        if relpath.startswith('/'):
+                            relpath = relpath[1:]
+                        out_filename = os.path.join(BUILD_DIR, relpath)
+                        os.makedirs(os.path.dirname(out_filename), exist_ok=True)
+                        # Render template
+                        content = post_template.render(body=html)
+                        with open(out_filename, 'w') as f:
+                            f.write(content)
             # Render other pages like home, etc.
             index_template = env.get_template('index.html')
             content = index_template.render(test='hello world')
