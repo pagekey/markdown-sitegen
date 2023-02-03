@@ -35,10 +35,12 @@ def cli_entry_point():
             for filename in files_to_render:
                 with open(filename) as f:
                     post = frontmatter.load(f)
+                    # Only publish the post if path specified
                     if 'path' in post:
-                        # Only publish the post if path specified
                         html = markdown.markdown(post.content)
-                        relpath = filename.replace(gen_dir, '').replace('.md', '.html')
+                        # Compute relative path to HTML file
+                        relpath = post['path'] + '.html'
+                        # Remove leading slash from path to HTML file
                         if relpath.startswith('/'):
                             relpath = relpath[1:]
                         out_filename = os.path.join(BUILD_DIR, relpath)
