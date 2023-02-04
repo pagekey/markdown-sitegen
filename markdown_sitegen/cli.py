@@ -35,7 +35,8 @@ def cli_entry_point():
                     if filename.lower().endswith('.md'):
                         files_to_render.append(os.path.join(root, filename))
             # Delete previous build dir
-            shutil.rmtree(BUILD_DIR)
+            if os.path.exists(BUILD_DIR):
+                shutil.rmtree(BUILD_DIR)
             # Render markdown to html
             env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
             post_template = env.get_template('post.html')
