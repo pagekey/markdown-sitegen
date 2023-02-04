@@ -37,34 +37,39 @@ def cli_entry_point():
             # Delete previous build dir
             if os.path.exists(BUILD_DIR):
                 shutil.rmtree(BUILD_DIR)
-            # Render markdown to html
-            env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
-            post_template = env.get_template('post.html')
+            # Load all posts and get metadata
+            posts = []
             for filename in files_to_render:
                 with open(filename) as f:
                     post = frontmatter.load(f)
                     # Only publish the post if path specified
                     if 'path' in post:
-                        html = markdown.markdown(post.content)
-                        # Compute relative path to HTML file
-                        relpath = post['path'] + '.html'
-                        # Remove leading slash from path to HTML file
-                        if relpath.startswith('/'):
-                            relpath = relpath[1:]
-                        out_filename = os.path.join(BUILD_DIR, relpath)
-                        os.makedirs(os.path.dirname(out_filename), exist_ok=True)
-                        # Render template
-                        content = post_template.render(
-                            body=html,
-                            root_path=get_root_path(relpath),
-                            blog_title="TODO support blog title",
-                        )
-                        with open(out_filename, 'w') as f:
-                            f.write(content)
+                        posts.append(post)
+            # Render markdown to html
+            env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
+            post_template = env.get_template('post.html')
+            for post in posts:
+                html = markdown.markdown(post.content)
+                # Compute relative path to HTML file
+                relpath = post['path'] + '/index.html'
+                # Remove leading slash from path to HTML file
+                if relpath.startswith('/'):
+                    relpath = relpath[1:]
+                out_filename = os.path.join(BUILD_DIR, relpath)
+                os.makedirs(os.path.dirname(out_filename), exist_ok=True)
+                # Render template
+                content = post_template.render(
+                    body=html,
+                    root_path=get_root_path(relpath),
+                    blog_title="TODO support blog title",
+                )
+                with open(out_filename, 'w') as f:
+                    f.write(content)
             # Render other pages like home, etc.
             index_template = env.get_template('index.html')
             content = index_template.render(
-                blog_title="TODO support blog title"
+                blog_title="TODO support blog title",
+                posts=posts,
             )
             with open(os.path.join(BUILD_DIR, 'index.html'), 'w') as f:
                 f.write(content)
