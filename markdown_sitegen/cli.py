@@ -5,10 +5,12 @@ import sys
 import frontmatter
 import jinja2
 import markdown
+import yaml
 
 from markdown_sitegen.lib import get_root_path
 
 
+CONFIG_DIR = '.markdown-sitegen/'
 BUILD_DIR = 'build'
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'web')
 STATIC_DIR = os.path.join(TEMPLATE_DIR, 'static')
@@ -37,6 +39,12 @@ def cli_entry_point():
             # Delete previous build dir
             if os.path.exists(BUILD_DIR):
                 shutil.rmtree(BUILD_DIR)
+            # Load config file
+            config_file_path = os.path.join(gen_dir, CONFIG_DIR, 'config.yml')
+            if not os.path.exists(config_file_path):
+                config_file_path = os.path.join(TEMPLATE_DIR, 'default_config.yml')
+            with open(config_file_path) as f:
+                config = yaml.safe_load(f)
             # Load all posts and get metadata
             posts = []
             for filename in files_to_render:
@@ -61,15 +69,15 @@ def cli_entry_point():
                 content = post_template.render(
                     body=html,
                     root_path=get_root_path(relpath),
-                    blog_title="TODO support blog title",
+                    config=config,
                 )
                 with open(out_filename, 'w') as f:
                     f.write(content)
             # Render other pages like home, etc.
             index_template = env.get_template('index.html')
             content = index_template.render(
-                blog_title="TODO support blog title",
                 posts=posts,
+                config=config,
             )
             with open(os.path.join(BUILD_DIR, 'index.html'), 'w') as f:
                 f.write(content)

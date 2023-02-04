@@ -16,6 +16,7 @@ setup(
         'jinja2',
         'python-frontmatter',
         'markdown',
+        'pyyaml',
     ],
     package_data={'markdown_sitegen': ['web/*']},
     project_urls={
