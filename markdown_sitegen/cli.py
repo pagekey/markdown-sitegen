@@ -5,6 +5,8 @@ import frontmatter
 import jinja2
 import markdown
 
+from markdown_sitegen.lib import get_root_path
+
 
 BUILD_DIR = 'build'
 TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'web')
@@ -46,7 +48,10 @@ def cli_entry_point():
                         out_filename = os.path.join(BUILD_DIR, relpath)
                         os.makedirs(os.path.dirname(out_filename), exist_ok=True)
                         # Render template
-                        content = post_template.render(body=html)
+                        content = post_template.render(
+                            body=html,
+                            root_path=get_root_path(relpath)
+                        )
                         with open(out_filename, 'w') as f:
                             f.write(content)
             # Render other pages like home, etc.
