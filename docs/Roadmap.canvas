@@ -1,0 +1,17 @@
+{
+	"nodes":[
+		{"id":"4452f578f42b4a5e","x":-667,"y":-107,"width":250,"height":60,"color":"4","type":"text","text":"Basic styling"},
+		{"id":"bcb910b01806f77f","x":-332,"y":-107,"width":250,"height":60,"color":"4","type":"text","text":"Posts list"},
+		{"id":"e0f4681cf34f3639","x":282,"y":-107,"width":250,"height":60,"type":"text","text":"Add Archive page"},
+		{"id":"a37c904bb218992d","x":-19,"y":-107,"width":250,"height":60,"type":"text","text":"Sort/limit index posts"},
+		{"id":"8b342423e2537698","x":589,"y":-462,"width":250,"height":60,"type":"text","text":"Only post if date in future"},
+		{"id":"6ecc1255db506d64","x":589,"y":-392,"width":250,"height":60,"type":"text","text":"Check for path collisions"},
+		{"id":"f6050aa57c3cbafc","x":589,"y":-318,"width":250,"height":60,"type":"text","text":"Allow override - `eject`"},
+		{"id":"b7552b8a07c1ca16","x":589,"y":-244,"width":250,"height":60,"type":"text","text":"Syntax highlighting"}
+	],
+	"edges":[
+		{"id":"7ddd1bd11701f545","fromNode":"4452f578f42b4a5e","fromSide":"right","toNode":"bcb910b01806f77f","toSide":"left"},
+		{"id":"3e4a33be84114e63","fromNode":"bcb910b01806f77f","fromSide":"right","toNode":"a37c904bb218992d","toSide":"left"},
+		{"id":"24e2f4caf02ecbbf","fromNode":"a37c904bb218992d","fromSide":"right","toNode":"e0f4681cf34f3639","toSide":"left"}
+	]
+}
