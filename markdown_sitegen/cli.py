@@ -2,6 +2,7 @@ import os
 import shutil
 import sys
 
+import datetime
 import frontmatter
 import jinja2
 import markdown
@@ -51,8 +52,13 @@ def cli_entry_point():
                 with open(filename) as f:
                     post = frontmatter.load(f)
                     # Only publish the post if path specified
-                    if 'path' in post:
-                        posts.append(post)
+                    if 'date' in post:
+                        post['date_parsed'] = datetime.datetime.strptime(post['date'], '%Y-%m-%d')
+                        if 'path' in post:
+                            datetime_today = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
+                            date_in_future = post['date_parsed'] > datetime_today
+                            if not date_in_future:
+                                posts.append(post)
             # Render markdown to html
             env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
             post_template = env.get_template('post.html')
