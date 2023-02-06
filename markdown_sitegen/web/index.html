@@ -5,7 +5,8 @@
 {% block content %}
 
 <div class="posts-index">
-    {% for post in posts %}
+    {% set posts_sorted = posts|sort(attribute='date_parsed', reverse=True) %}
+    {% for post in posts_sorted[0:5] %}
         <div class="post">
             <div class="title">
                 <a href="{{ post['path'] }}">{{ post['title'] }}</a>
