@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Archive{% endblock %}
+
+{% block content %}
+
+<div class="posts-index">
+    {% set posts_sorted = posts|sort(attribute='date_parsed', reverse=True) %}
+    {% for post in posts_sorted %}
+        <div class="post">
+            <div class="title">
+                <a href="{{ post['path'] }}">{{ post['title'] }}</a>
+            </div>
+            <div class="date">
+                {{ post['date'] }}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{{ test }}
+{% endblock %}

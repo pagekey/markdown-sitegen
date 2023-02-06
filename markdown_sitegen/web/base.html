@@ -10,6 +10,10 @@
 <body>
     <div class="nav">
         <a id="title" href="{{ root_path }}">{{ config['title'] }}</a>
+        <ul class="links">
+            <li><a href="{{ root_path }}">Home</a></li>
+            <li><a href="{{ root_path }}archive">Archive</a></li>
+        </ul>
     </div>
     <div class="content">
         {% block content %}
