@@ -67,6 +67,7 @@ def cli_entry_point():
                 os.makedirs(os.path.dirname(out_filename), exist_ok=True)
                 # Render template
                 content = post_template.render(
+                    post=post,
                     body=html,
                     root_path=get_root_path(relpath),
                     config=config,
