@@ -12,7 +12,7 @@
                 <a href="{{ post['path'] }}">{{ post['title'] }}</a>
             </div>
             <div class="date">
-                {{ post['date'] }}
+                {{ post['date_parsed'].strftime('%B %-m, %Y') }}
             </div>
         </div>
     {% endfor %}

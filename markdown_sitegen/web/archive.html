@@ -4,15 +4,21 @@
 
 {% block content %}
 
-<div class="posts-index">
+<div class="archive">
     {% set posts_sorted = posts|sort(attribute='date_parsed', reverse=True) %}
+    {% set prev_year = {'value': '0000'} %}
     {% for post in posts_sorted %}
+        {% set cur_year = post['date_parsed'].strftime('%Y') %}
+        {% if cur_year != prev_year['value'] %}
+        {% if prev_year.update({'value': cur_year }) %}{% endif %}
+        <div>
+            <h3>{{ cur_year }}</h3>
+        </div>
+        {% endif %}
+
         <div class="post">
             <div class="title">
-                <a href="{{ post['path'] }}">{{ post['title'] }}</a>
-            </div>
-            <div class="date">
-                {{ post['date'] }}
+                {{ post['date_parsed'].strftime('%b %-m') }}: <a href="{{ post['path'] }}">{{ post['title'] }}</a> 
             </div>
         </div>
     {% endfor %}

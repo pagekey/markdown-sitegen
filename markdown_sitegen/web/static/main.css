@@ -38,3 +38,9 @@ html, body {
 .posts-index .post .title {
     font-size: 150%;
 }
+/* .posts-index .post.archive {
+    display: inline;
+}
+.posts-index .post.archive .title {
+    font-size: inherit;
+} */
