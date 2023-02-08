@@ -3,6 +3,21 @@
 {% block title %}{{ post['title'] }}{% endblock %}
 
 {% block content %}
-<h1>{{ post['title'] }}</h1>
-{{ body }}
+    <h1>{{ post['title'] }}</h1>
+    {{ body }}
+
+    {% if prev_post %}
+        <div>
+            Previous: 
+            <a href="{{relpath}}{{ prev_post['path'] }}">{{ prev_post['title'] }}</a>
+        </div>
+    {% endif %}
+
+    {% if next_post %}
+        <div>
+            Next: 
+            <a href="{{relpath}}{{ next_post['path'] }}">{{ next_post['title'] }}</a>
+        </div>
+    {% endif %}
+
 {% endblock %}

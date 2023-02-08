@@ -62,7 +62,17 @@ def cli_entry_point():
             # Render markdown to html
             env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
             post_template = env.get_template('post.html')
-            for post in posts:
+            # Sort the posts by date
+            posts = sorted(posts, key=lambda x: x['date_parsed'], reverse=True)
+            for i,post in enumerate(posts):
+                # Init prev/next posts
+                next_post = None
+                if i < len(posts) - 1:
+                    next_post = posts[i+1]
+                prev_post = None
+                if i > 0:
+                    prev_post = posts[i-1]
+                # Render markdown to html
                 html = markdown.markdown(post.content)
                 # Compute relative path to HTML file
                 relpath = post['path'] + '/index.html'
@@ -77,6 +87,8 @@ def cli_entry_point():
                     body=html,
                     root_path=get_root_path(relpath),
                     config=config,
+                    next_post=next_post,
+                    prev_post=prev_post,
                 )
                 with open(out_filename, 'w') as f:
                     f.write(content)
