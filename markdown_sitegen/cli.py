@@ -48,6 +48,7 @@ def cli_entry_point():
                 config = yaml.safe_load(f)
             # Load all posts and get metadata
             posts = []
+            post_paths = {}
             for filename in files_to_render:
                 with open(filename) as f:
                     post = frontmatter.load(f)
@@ -55,6 +56,10 @@ def cli_entry_point():
                     if 'date' in post:
                         post['date_parsed'] = datetime.datetime.strptime(post['date'], '%Y-%m-%d')
                         if 'path' in post:
+                            if post['path'] in post_paths:
+                                raise ValueError('Two posts with the same path: ', post['path'])
+                            else:
+                                post_paths[post['path']] = True
                             datetime_today = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
                             date_in_future = post['date_parsed'] > datetime_today
                             if not date_in_future:
