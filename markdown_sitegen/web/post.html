@@ -4,6 +4,23 @@
 
 {% block content %}
     <h1>{{ post['title'] }}</h1>
+    {% if 'authors' in post %}
+    <div>
+        {% if (post['authors']|length) > 1 %}
+        Authors:
+        {% else %}
+        Author: 
+        {% endif %}
+        {% for author in post['authors'] %}
+            {% if author in config['authors'] %}    
+            {{ config['authors'][author]['name'] }}
+            {% else %}
+            {{ author }}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+
     {{ body }}
 
     {% if prev_post %}
