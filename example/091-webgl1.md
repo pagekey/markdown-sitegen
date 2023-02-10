@@ -6,6 +6,4 @@ youtube: 9DY36BrGS1M
 path: /blog/webgl-1
 ---
 
-<YouTubePlayer youtubeLink={frontmatter.youtube} />
-
 That was easy!
