@@ -27,6 +27,7 @@ def cli_entry_point():
         if os.path.exists(gen_dir) and os.path.isdir(gen_dir):
             # Compute files to render, taking into account .sitegenignore
             files_to_render = []
+            image_files = []
             sitegenignore = []
             if os.path.exists(os.path.join(gen_dir, '.sitegenignore')):
                 with open(os.path.join(gen_dir, '.sitegenignore')) as f:
@@ -35,8 +36,14 @@ def cli_entry_point():
                 if os.path.basename(root) in sitegenignore:
                     continue
                 for filename in files:
+                    full_path = os.path.join(root, filename)
+                    # Add markdown files
                     if filename.lower().endswith('.md'):
-                        files_to_render.append(os.path.join(root, filename))
+                        files_to_render.append(full_path)
+                    # Add image files
+                    for image_type in ['.jpg', '.jpeg', '.png', '.gif']:
+                        if filename.lower().endswith(image_type):
+                            image_files.append(full_path)
             # Delete previous build dir
             if os.path.exists(BUILD_DIR):
                 shutil.rmtree(BUILD_DIR)
@@ -116,6 +123,10 @@ def cli_entry_point():
                 f.write(content)
             # Copy static files into place
             shutil.copytree(STATIC_DIR, os.path.join(BUILD_DIR, 'static'))
+            # Copy images into static dir
+            os.makedirs(os.path.join(STATIC_DIR, 'img'), exist_ok=True)
+            for image in image_files:
+                shutil.copy(image, os.path.join(BUILD_DIR, 'static', 'img', os.path.basename(image)))
         else:
             print("Error: not a directory - %s" % gen_dir)
     else:
