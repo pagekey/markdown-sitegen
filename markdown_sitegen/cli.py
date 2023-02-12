@@ -8,6 +8,7 @@ import frontmatter
 import jinja2
 import markdown
 import yaml
+from pygments.formatters import HtmlFormatter
 
 from markdown_sitegen.lib import get_root_path
 
@@ -96,7 +97,7 @@ def cli_entry_point():
                 # Render markdown to html
                 post_content = post.content
                 post_content = re.sub(r"\!\[(.+)\]\((.+)\)", f'![\\1]({os.path.dirname(os.path.dirname(root_path))}/static/img/\\2)', post_content)
-                html = markdown.markdown(post_content)
+                html = markdown.markdown(post_content, extensions=['fenced_code', 'codehilite'])
                 # Render template
                 content = post_template.render(
                     post=post,
@@ -139,6 +140,11 @@ def cli_entry_point():
                     images_copied[image_basename] = True
                 # Copy it
                 shutil.copy(image, os.path.join(BUILD_DIR, 'static', 'img', image_basename))
+            # Generate pygments CSS
+            formatter = HtmlFormatter()
+            code_highlight_css = formatter.get_style_defs()
+            with open(os.path.join(BUILD_DIR, 'static', 'code-highlights.css'), 'w') as f:
+                f.write(code_highlight_css)
         else:
             print("Error: not a directory - %s" % gen_dir)
     else:
