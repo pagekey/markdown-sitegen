@@ -129,8 +129,16 @@ def cli_entry_point():
             shutil.copytree(STATIC_DIR, os.path.join(BUILD_DIR, 'static'))
             # Copy images into static dir
             os.makedirs(os.path.join(STATIC_DIR, 'img'), exist_ok=True)
+            images_copied = {}
             for image in image_files:
-                shutil.copy(image, os.path.join(BUILD_DIR, 'static', 'img', os.path.basename(image)))
+                # Make sure the image name is unique
+                image_basename = os.path.basename(image)
+                if image_basename in images_copied:
+                    raise ValueError('Image names must be unique regardless of directory. Duplicate image found:', image_basename)
+                else:
+                    images_copied[image_basename] = True
+                # Copy it
+                shutil.copy(image, os.path.join(BUILD_DIR, 'static', 'img', image_basename))
         else:
             print("Error: not a directory - %s" % gen_dir)
     else:
