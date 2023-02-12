@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 import sys
 
@@ -84,8 +85,6 @@ def cli_entry_point():
                 prev_post = None
                 if i > 0:
                     prev_post = posts[i-1]
-                # Render markdown to html
-                html = markdown.markdown(post.content)
                 # Compute relative path to HTML file
                 relpath = post['path'] + '/index.html'
                 # Remove leading slash from path to HTML file
@@ -93,11 +92,16 @@ def cli_entry_point():
                     relpath = relpath[1:]
                 out_filename = os.path.join(BUILD_DIR, relpath)
                 os.makedirs(os.path.dirname(out_filename), exist_ok=True)
+                root_path = get_root_path(relpath)
+                # Render markdown to html
+                post_content = post.content
+                post_content = re.sub(r"\!\[(.+)\]\((.+)\)", f'![\\1]({os.path.dirname(os.path.dirname(root_path))}/static/img/\\2)', post_content)
+                html = markdown.markdown(post_content)
                 # Render template
                 content = post_template.render(
                     post=post,
                     body=html,
-                    root_path=get_root_path(relpath),
+                    root_path=root_path,
                     config=config,
                     next_post=next_post,
                     prev_post=prev_post,

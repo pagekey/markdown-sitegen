@@ -1,6 +1,6 @@
 ---
-title: "Some nested post"
-date: "2022-12-09"
+title: "Kidney reveal"
+date: "2023-02-11"
 authors: [steve]
 path: /blog/kidney-reveal
 ---
@@ -8,3 +8,7 @@ path: /blog/kidney-reveal
 here's my kidney, no lie:
 
 ![kidney](kidney.jpg)
+
+but the thing is, this is NOT my kidney:
+
+![not my kidney](bean.jpg)
