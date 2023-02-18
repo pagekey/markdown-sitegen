@@ -44,3 +44,18 @@ html, body {
 .posts-index .post.archive .title {
     font-size: inherit;
 } */
+
+.footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 1em;
+    margin-top: 4em;
+}
+.footer a {
+    color: inherit;
+}
+.footer #credit {
+    margin-top: 0.75em;
+    font-size: 80%;
+}

@@ -20,5 +20,18 @@
         {% block content %}
         {% endblock %}
     </div>
+    <div class="footer">
+        {% if config['footer']['copyright']['enabled'] %}
+        <div id="copyright">
+            Copyright &copy; <span id="year"></span>{{ config['footer']['copyright']['company'] }}
+        </div>
+        {% endif %}
+        {% if config['footer']['give_credit'] %}
+        <div id="credit">
+            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">markdown-sitegen</a> from <a href="https://www.pagekeytech.com/">PageKey Tech</a>
+        </div>
+        {% endif %}
+    </div>
+    <script src="{{ root_path }}static/main.js"></script>
 </body>
 </html>

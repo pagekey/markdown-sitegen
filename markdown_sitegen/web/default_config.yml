@@ -1,1 +1,6 @@
 title: Your Website
+footer:
+  copyright:
+    enabled: true
+    company: Your Company
+  give_credit: true
