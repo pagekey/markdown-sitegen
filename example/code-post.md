@@ -7,6 +7,8 @@ path: /blog/code-post
 
 Some python code here:
 
+<!-- truncate -->
+
 ```python
 import os
 print('hi')

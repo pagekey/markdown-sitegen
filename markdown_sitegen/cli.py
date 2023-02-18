@@ -98,6 +98,10 @@ def cli_entry_point():
                 post_content = post.content
                 post_content = re.sub(r"\!\[(.+)\]\((.+)\)", f'![\\1]({os.path.dirname(os.path.dirname(root_path))}/static/img/\\2)', post_content)
                 post['body'] = markdown.markdown(post_content, extensions=['fenced_code', 'codehilite'])
+                # Add truncated body if present
+                if '<!-- truncate -->' in post['body']:
+                    idx = post['body'].index('<!-- truncate -->')
+                    post['summary'] = post['body'][0:idx]
                 # Render template
                 content = post_template.render(
                     post=post,

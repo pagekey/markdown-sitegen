@@ -16,7 +16,11 @@
     {% include 'components/authors.html' %}
     {% endif %}
     <div>
+        {% if 'summary' in post %}
+        {{ post['summary'] }}
+        {% else %}
         {{ post['body'] }}
+        {% endif %}
     </div>
 </div>
 {% endfor %}
