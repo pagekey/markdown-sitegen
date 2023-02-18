@@ -4,6 +4,8 @@
 
 {% block content %}
 
+<h2>Recent Posts</h2>
+
 <div class="posts-index">
     {% for post in posts[0:5] %}
         <div class="post">
@@ -16,5 +18,7 @@
         </div>
     {% endfor %}
 </div>
+
+<a class="big-button" href="blog">See more</a>
 
 {% endblock %}

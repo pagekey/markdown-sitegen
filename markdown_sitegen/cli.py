@@ -109,7 +109,7 @@ def cli_entry_point():
                 )
                 with open(out_filename, 'w') as f:
                     f.write(content)
-            # Render other pages like home, etc.
+            # Render index
             index_template = env.get_template('index.html')
             content = index_template.render(
                 posts=posts,
@@ -117,6 +117,7 @@ def cli_entry_point():
             )
             with open(os.path.join(BUILD_DIR, 'index.html'), 'w') as f:
                 f.write(content)
+            # Render archive
             archive_template = env.get_template('archive.html')
             content = archive_template.render(
                 posts=posts,
@@ -125,6 +126,16 @@ def cli_entry_point():
             )
             os.makedirs(os.path.join(BUILD_DIR, 'archive'), exist_ok=True)
             with open(os.path.join(BUILD_DIR, 'archive', 'index.html'), 'w') as f:
+                f.write(content)
+            # Render blog
+            blog_template = env.get_template('blog.html')
+            content = blog_template.render(
+                posts=posts,
+                config=config,
+                root_path='../'
+            )
+            os.makedirs(os.path.join(BUILD_DIR, 'blog'), exist_ok=True)
+            with open(os.path.join(BUILD_DIR, 'blog', 'index.html'), 'w') as f:
                 f.write(content)
             # Copy static files into place
             shutil.copytree(STATIC_DIR, os.path.join(BUILD_DIR, 'static'))
