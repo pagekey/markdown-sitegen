@@ -72,3 +72,8 @@ html, body {
 .big-button:hover {
     background-color: rgb(41, 95, 167);
 }
+
+/* blog page */
+.post-preview .title {
+    font-size: 2em;
+}

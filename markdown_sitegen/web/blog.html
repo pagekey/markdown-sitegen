@@ -1,1 +1,24 @@
-hello world
+{% extends "base.html" %}
+
+{% block title %}Blog{% endblock %}
+
+{% block content %}
+
+{% for post in posts[0:5] %}
+<div class="post-preview">
+    <div class="title">
+        <a href="{{ post['path'] }}">{{ post['title'] }}</a>
+    </div>
+    <div class="date">
+        {{ post['date_parsed'].strftime('%B %-m, %Y') }}
+    </div>
+    {% if 'authors' in post %}
+    {% include 'components/authors.html' %}
+    {% endif %}
+    <div>
+        {{ post['body'] }}
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

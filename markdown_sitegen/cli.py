@@ -97,11 +97,11 @@ def cli_entry_point():
                 # Render markdown to html
                 post_content = post.content
                 post_content = re.sub(r"\!\[(.+)\]\((.+)\)", f'![\\1]({os.path.dirname(os.path.dirname(root_path))}/static/img/\\2)', post_content)
-                html = markdown.markdown(post_content, extensions=['fenced_code', 'codehilite'])
+                post['body'] = markdown.markdown(post_content, extensions=['fenced_code', 'codehilite'])
                 # Render template
                 content = post_template.render(
                     post=post,
-                    body=html,
+                    body=post['body'],
                     root_path=root_path,
                     config=config,
                     next_post=next_post,
