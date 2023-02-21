@@ -4,7 +4,7 @@
 
 {% block content %}
 
-{% for post in posts[0:5] %}
+{% for post in posts[0:PAGINATION] %}
 <div class="post-preview">
     <div class="title">
         <a href="{{ post['path'] }}">{{ post['title'] }}</a>
@@ -24,5 +24,17 @@
     </div>
 </div>
 {% endfor %}
+
+{% if has_prev %}
+{% if prev_idx == 1 %}
+<a class="big-button" href="{{root_path}}blog/">Newer posts</a>
+{% else %}
+<a class="big-button" href="{{root_path}}blog/page/{{ prev_idx }}">Newer posts</a>
+{% endif %}
+{% endif %}
+
+{% if has_next %}
+<a class="big-button" href="{{root_path}}blog/page/{{ next_idx }}">Older posts</a>
+{% endif %}
 
 {% endblock %}
