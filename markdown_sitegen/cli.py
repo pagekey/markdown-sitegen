@@ -132,15 +132,34 @@ def cli_entry_point():
             with open(os.path.join(BUILD_DIR, 'archive', 'index.html'), 'w') as f:
                 f.write(content)
             # Render blog
-            blog_template = env.get_template('blog.html')
-            content = blog_template.render(
-                posts=posts,
-                config=config,
-                root_path='../'
-            )
-            os.makedirs(os.path.join(BUILD_DIR, 'blog'), exist_ok=True)
-            with open(os.path.join(BUILD_DIR, 'blog', 'index.html'), 'w') as f:
-                f.write(content)
+            PAGINATION = 5
+            num_pages = len(posts) // PAGINATION + 1
+            for i in range(num_pages):
+                blog_template = env.get_template('blog.html')
+                prev_idx = i-1
+                next_idx = i+1
+                blog_posts = posts[PAGINATION*i:PAGINATION*(i+1)]
+                has_next = next_idx*PAGINATION < len(posts)
+                has_prev = prev_idx*PAGINATION >= 0
+                if i == 0:
+                    root_path = '../'
+                    blog_path = os.path.join(BUILD_DIR, 'blog')
+                else:
+                    root_path = '../../../'
+                    blog_path = os.path.join(BUILD_DIR, 'blog', 'page', str(i))
+                content = blog_template.render(
+                    posts=blog_posts,
+                    config=config,
+                    root_path=root_path,
+                    prev_idx=prev_idx,
+                    next_idx=next_idx,
+                    has_prev=has_prev,
+                    has_next=has_next,
+                )
+                os.makedirs(blog_path, exist_ok=True)
+                with open(os.path.join(blog_path, 'index.html'), 'w') as f:
+                    f.write(content)
+
             # Copy static files into place
             shutil.copytree(STATIC_DIR, os.path.join(BUILD_DIR, 'static'))
             # Copy images into static dir
