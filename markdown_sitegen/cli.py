@@ -132,15 +132,15 @@ def cli_entry_point():
             with open(os.path.join(BUILD_DIR, 'archive', 'index.html'), 'w') as f:
                 f.write(content)
             # Render blog
-            PAGINATION = 10
-            num_pages = len(posts) // PAGINATION + 1
+            pagination = config['pagination']
+            num_pages = len(posts) // pagination + 1
             for i in range(num_pages):
                 blog_template = env.get_template('blog.html')
                 prev_idx = i-1
                 next_idx = i+1
-                blog_posts = posts[PAGINATION*i:PAGINATION*(i+1)]
-                has_next = next_idx*PAGINATION < len(posts)
-                has_prev = prev_idx*PAGINATION >= 0
+                blog_posts = posts[pagination*i:pagination*(i+1)]
+                has_next = next_idx*pagination < len(posts)
+                has_prev = prev_idx*pagination >= 0
                 if i == 0:
                     root_path = '../'
                     blog_path = os.path.join(BUILD_DIR, 'blog')
@@ -155,7 +155,6 @@ def cli_entry_point():
                     next_idx=next_idx+1,
                     has_prev=has_prev,
                     has_next=has_next,
-                    PAGINATION=PAGINATION,
                 )
                 os.makedirs(blog_path, exist_ok=True)
                 with open(os.path.join(blog_path, 'index.html'), 'w') as f:

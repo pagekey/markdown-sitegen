@@ -4,3 +4,5 @@ footer:
     enabled: true
     company: Your Company
   give_credit: true
+
+pagination: 10

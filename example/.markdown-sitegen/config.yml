@@ -9,3 +9,5 @@ footer:
     enabled: true
     company: PageKey Tech
   give_credit: true
+
+pagination: 10
