@@ -14,29 +14,33 @@
     <link rel="stylesheet" href="{{ root_path }}static/main.css">
 </head>
 <body>
-    <div class="nav">
-        <a id="title" href="{{ root_path }}"><img id="logo" src="{{ root_path }}static/img/logo.png" />{{ config['title'] }}</a>
-        <ul class="links">
-            <li><a href="{{ root_path }}">Home</a></li>
-            <li><a href="{{ root_path }}blog">Blog</a></li>
-            <li><a href="{{ root_path }}archive">Archive</a></li>
-        </ul>
-    </div>
-    <div class="content">
-        {% block content %}
-        {% endblock %}
-    </div>
-    <div class="footer">
-        {% if config['footer']['copyright']['enabled'] %}
-        <div id="copyright">
-            Copyright &copy; <span id="year"></span>{{ config['footer']['copyright']['company'] }}
+    <div id="page-container">
+        <div id="content-wrap">
+            <div class="nav">
+                <a id="title" href="{{ root_path }}"><img id="logo" src="{{ root_path }}static/img/logo.png" />{{ config['title'] }}</a>
+                <ul class="links">
+                    <li><a href="{{ root_path }}">Home</a></li>
+                    <li><a href="{{ root_path }}blog">Blog</a></li>
+                    <li><a href="{{ root_path }}archive">Archive</a></li>
+                </ul>
+            </div>
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
         </div>
-        {% endif %}
-        {% if config['footer']['give_credit'] %}
-        <div id="credit">
-            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">markdown-sitegen</a> from <a href="https://www.pagekeytech.com/">PageKey Tech</a>
+        <div class="footer">
+            {% if config['footer']['copyright']['enabled'] %}
+            <div id="copyright">
+                Copyright &copy; <span id="year"></span>{{ config['footer']['copyright']['company'] }}
+            </div>
+            {% endif %}
+            {% if config['footer']['give_credit'] %}
+            <div id="credit">
+                Made with <a href="https://github.com/pagekeytech/markdown-sitegen">markdown-sitegen</a> from <a href="https://www.pagekeytech.com/">PageKey Tech</a>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
     <script src="{{ root_path }}static/main.js"></script>
 </body>
