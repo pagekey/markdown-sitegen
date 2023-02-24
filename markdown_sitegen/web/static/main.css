@@ -30,6 +30,13 @@ html, body {
 .nav .links li a {
     text-decoration: none;
 }
+.nav, .nav #title {
+    display: flex;
+    align-items: center;
+}
+.nav #logo {
+    margin-right: 0.4em;
+}
 
 .content {
     margin: 1em;
