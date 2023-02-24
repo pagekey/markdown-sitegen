@@ -70,7 +70,7 @@ html, body {
 
 .big-button {
     color: white;
-    background-color: rgb(78, 155, 255);
+    background-color: var(--theme-primary);
     margin: 1em auto;
     padding: 1em;
     font-weight: bold;
@@ -78,10 +78,14 @@ html, body {
     display: inline-block;
 }
 .big-button:hover {
-    background-color: rgb(41, 95, 167);
+    filter: brightness(85%);
 }
 
 /* blog page */
 .post-preview .title {
     font-size: 2em;
+}
+
+a {
+    color: var(--theme-primary);
 }

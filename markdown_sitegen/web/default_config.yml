@@ -1,4 +1,8 @@
 title: Your Website
+
+theme:
+  primary: "blue"
+
 footer:
   copyright:
     enabled: true

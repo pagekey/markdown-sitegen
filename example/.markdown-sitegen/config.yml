@@ -4,6 +4,10 @@ authors:
     name: Steve G
   other_steve:
     name: Steve 2
+
+theme:
+  primary: "#1976d2"
+
 footer:
   copyright:
     enabled: true
