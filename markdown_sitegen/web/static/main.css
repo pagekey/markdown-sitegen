@@ -73,16 +73,12 @@ html, body {
     margin: 1em;
 }
 
+.posts-index .post {
+    padding: 0.5em 0;
+}
 .posts-index .post .title {
     font-size: 150%;
 }
-/* .posts-index .post.archive {
-    display: inline;
-}
-.posts-index .post.archive .title {
-    font-size: inherit;
-} */
-
 
 .big-button {
     color: white;
