@@ -36,6 +36,7 @@ html, body {
 }
 .nav #logo {
     margin-right: 0.4em;
+    height: 2em;
 }
 
 .content {
