@@ -57,6 +57,7 @@ def cli_entry_point():
                 config = yaml.safe_load(f)
             # Load all posts and get metadata
             posts = []
+            redirects = []
             post_paths = {}
             for filename in files_to_render:
                 with open(filename) as f:
@@ -69,10 +70,19 @@ def cli_entry_point():
                                 raise ValueError('Two posts with the same path: ', post['path'])
                             else:
                                 post_paths[post['path']] = True
+                            if 'redirects' in post:
+                                for redir in post['redirects']:
+                                    if redir in post_paths:
+                                        raise ValueError('Two posts with the same path: ', post['path'])
+                                else:
+                                    post_paths[redir] = True
                             datetime_today = datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
                             date_in_future = post['date_parsed'] > datetime_today
                             if not date_in_future:
                                 posts.append(post)
+                                if 'redirects' in post:
+                                    for redir in post['redirects']:
+                                        redirects.append((redir, post['path']))
             # Render markdown to html
             env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
             post_template = env.get_template('post.html')
@@ -110,6 +120,26 @@ def cli_entry_point():
                     config=config,
                     next_post=next_post,
                     prev_post=prev_post,
+                )
+                with open(out_filename, 'w') as f:
+                    f.write(content)
+            
+            # Render redirects
+            for redir, target in redirects:
+                # Compute relative path to HTML file
+                relpath = redir + '/index.html'
+                # Remove leading slash from path to HTML file
+                if relpath.startswith('/'):
+                    relpath = relpath[1:]
+                if target.startswith('/'):
+                    target = target[1:]
+                out_filename = os.path.join(BUILD_DIR, relpath)
+                os.makedirs(os.path.dirname(out_filename), exist_ok=True)
+                root_path = get_root_path(relpath)
+                redir_template = env.get_template('redirect.html')
+                content = redir_template.render(
+                    root_path=root_path,
+                    target=target,
                 )
                 with open(out_filename, 'w') as f:
                     f.write(content)
