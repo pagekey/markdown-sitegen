@@ -30,7 +30,7 @@ def cli_entry_point():
             # Compute files to render, taking into account .sitegenignore
             files_to_render = []
             image_files = []
-            sitegenignore = []
+            sitegenignore = ['build']
             if os.path.exists(os.path.join(gen_dir, '.sitegenignore')):
                 with open(os.path.join(gen_dir, '.sitegenignore')) as f:
                     sitegenignore = f.read().split('\n')
@@ -107,7 +107,15 @@ def cli_entry_point():
                 # Render markdown to html
                 post_content = post.content
                 post_content = re.sub(r"\!\[(.+)\]\((.+)\)", f'![\\1]({os.path.dirname(os.path.dirname(root_path))}/static/img/\\2)', post_content)
-                post['body'] = markdown.markdown(post_content, extensions=['fenced_code', 'codehilite'])
+                post['body'] = markdown.markdown(
+                    post_content, 
+                    extensions=['fenced_code', 'codehilite', 'mdx_math'],
+                    extension_configs={
+                        'mdx_math': {
+                            'enable_dollar_delimiter': True,
+                        },
+                    },
+                )
                 # Add truncated body if present
                 if '<!-- truncate -->' in post['body']:
                     idx = post['body'].index('<!-- truncate -->')
@@ -199,9 +207,9 @@ def cli_entry_point():
                 # Make sure the image name is unique
                 image_basename = os.path.basename(image)
                 if image_basename in images_copied:
-                    raise ValueError('Image names must be unique regardless of directory. Duplicate image found:', image_basename)
+                    raise ValueError('Image names must be unique regardless of directory. Duplicate images found:', image, images_copied[image_basename])
                 else:
-                    images_copied[image_basename] = True
+                    images_copied[image_basename] = image
                 # Copy it
                 shutil.copy(image, os.path.join(BUILD_DIR, 'static', 'img', image_basename))
             # Generate pygments CSS
