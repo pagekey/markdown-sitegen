@@ -8,14 +8,24 @@
     {% include 'components/authors.html' %}
     {% endif %}
 
+    {% if prev_post %}
+    <a class="big-button" href="{{relpath}}{{ prev_post['path'] }}">Previous: {{ prev_post['title'] }}</a>
+    {% endif %}
+
+    {% if next_post %}
+        <a class="big-button" href="{{relpath}}{{ next_post['path'] }}">Next: {{ next_post['title'] }}</a>
+    {% endif %}
+
     {% if 'youtube' in post %}
-        <iframe 
-            src="https://www.youtube.com/embed/{{ post['youtube'] }}"
-            title="YouTube video player" 
-            frameBorder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowFullScreen>
-        </iframe>
+        <div class="youtube">
+            <iframe 
+                src="https://www.youtube.com/embed/{{ post['youtube'] }}"
+                title="YouTube video player" 
+                frameBorder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowFullScreen>
+            </iframe>
+        </div>
     {% endif %}
 
     {{ body }}
